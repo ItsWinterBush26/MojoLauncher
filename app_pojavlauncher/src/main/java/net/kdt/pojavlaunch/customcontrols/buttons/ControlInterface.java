@@ -401,13 +401,7 @@ public interface ControlInterface extends View.OnLongClickListener, GrabListener
 
     default void injectLayoutParamBehavior() {
         getControlView().addOnLayoutChangeListener((v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom) -> {
-            getProperties().setWidth(right - left);
-            getProperties().setHeight(bottom - top);
             setBackground();
-
-            // Re-calculate position
-            getControlView().setX(getControlView().getX());
-            getControlView().setY(getControlView().getY());
         });
     }
 
