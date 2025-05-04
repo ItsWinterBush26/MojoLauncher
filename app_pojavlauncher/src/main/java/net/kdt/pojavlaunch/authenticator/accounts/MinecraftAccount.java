@@ -54,7 +54,7 @@ public class MinecraftAccount {
     }
     
     public void save() throws IOException {
-        FileUtils.ensureDirectory(mSaveLocation);
+        FileUtils.ensureParentDirectory(mSaveLocation);
         JSONUtils.writeToFile(mSaveLocation, this);
     }
 
