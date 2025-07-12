@@ -2,8 +2,6 @@ package net.kdt.pojavlaunch;
 
 import static android.os.Build.VERSION.SDK_INT;
 import static net.kdt.pojavlaunch.PojavApplication.sExecutorService;
-import static net.kdt.pojavlaunch.prefs.LauncherPreferences.PREF_IGNORE_NOTCH;
-import static net.kdt.pojavlaunch.prefs.LauncherPreferences.PREF_NOTCH_SIZE;
 
 import android.app.Activity;
 import android.app.ActivityManager;
@@ -16,7 +14,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.AssetManager;
-import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Color;
@@ -79,7 +76,6 @@ import net.kdt.pojavlaunch.value.MinecraftLibraryArtifact;
 
 import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.io.IOUtils;
-import org.lwjgl.glfw.CallbackBridge;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -623,10 +619,6 @@ public final class Tools {
         return finalClasspath.toString();
     }
 
-
-
-
-
     public static DisplayMetrics getDisplayMetrics(Activity activity) {
         DisplayMetrics displayMetrics = new DisplayMetrics();
 
@@ -638,13 +630,6 @@ public final class Tools {
                 activity.getDisplay().getRealMetrics(displayMetrics);
             } else { // Removed the clause for devices with unofficial notch support, since it also ruins all devices with virtual nav bars before P
                 activity.getWindowManager().getDefaultDisplay().getRealMetrics(displayMetrics);
-            }
-            if(!PREF_IGNORE_NOTCH){
-                //Remove notch width when it isn't ignored.
-                if(activity.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT)
-                    displayMetrics.heightPixels -= PREF_NOTCH_SIZE;
-                else
-                    displayMetrics.widthPixels -= PREF_NOTCH_SIZE;
             }
         }
         currentDisplayMetrics = displayMetrics;
@@ -721,35 +706,13 @@ public final class Tools {
             }else {
                 insetView.setPadding(0, 0, 0, 0);
             }
-            v.post(()->Tools.updateWindowSize(activity));
             return WindowInsets.CONSUMED;
         });
         insetView.requestApplyInsets();
     }
 
+    // Note: this should *NOT* be used for positioning and sizing things on the screen
     public static DisplayMetrics currentDisplayMetrics;
-
-    public static void updateWindowSize(Activity activity) {
-        currentDisplayMetrics = getDisplayMetrics(activity);
-
-        View dimensionView = activity.findViewById(R.id.dimension_tracker);
-
-        if(dimensionView != null) {
-            int width = dimensionView.getWidth();
-            int height = dimensionView.getHeight();
-            if(width != 0 && height != 0) {
-                Log.i("Tools", "Using dimension_tracker for display dimensions; W="+width+" H="+height);
-                CallbackBridge.physicalWidth = width;
-                CallbackBridge.physicalHeight = height;
-                return;
-            }else{
-                Log.e("Tools","Dimension tracker detected but dimensions out of date. Please check usage.", new Exception());
-            }
-        }
-
-        CallbackBridge.physicalWidth = currentDisplayMetrics.widthPixels;
-        CallbackBridge.physicalHeight = currentDisplayMetrics.heightPixels;
-    }
 
     public static float dpToPx(float dp) {
         //Better hope for the currentDisplayMetrics to be good

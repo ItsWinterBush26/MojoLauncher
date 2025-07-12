@@ -6,6 +6,7 @@ import static org.lwjgl.glfw.CallbackBridge.isGrabbing;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Point;
 import android.os.Build;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -69,7 +70,8 @@ public class ControlLayout extends FrameLayout {
 
 
 	public void loadLayout(String jsonPath) throws IOException, JsonSyntaxException {
-		CustomControls layout = LayoutConverter.loadAndConvertIfNecessary(jsonPath);
+		Point size = new Point(getWidth(), getHeight());
+		CustomControls layout = LayoutConverter.loadAndConvertIfNecessary(size, jsonPath);
 		if(layout != null) {
 			loadLayout(layout);
 			updateLoadedFileName(jsonPath);

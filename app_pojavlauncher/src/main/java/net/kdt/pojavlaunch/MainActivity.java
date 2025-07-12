@@ -239,7 +239,6 @@ public class MainActivity extends BaseActivity implements ControlButtonMenuListe
     @Override
     public void onAttachedToWindow() {
         // Post to get the correct display dimensions after layout.
-        LauncherPreferences.computeNotchSize(this);
         mControlLayout.post(()->{
             Tools.getDisplayMetrics(this);
             loadControls();
@@ -312,7 +311,6 @@ public class MainActivity extends BaseActivity implements ControlButtonMenuListe
         mControlLayout.post(()->{
             // Child of mControlLayout, so refreshing size here is correct
             minecraftGLView.refreshSize();
-            Tools.updateWindowSize(this);
             mControlLayout.refreshControlButtonPositions();
         });
     }

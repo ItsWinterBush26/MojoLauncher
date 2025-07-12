@@ -19,7 +19,6 @@ public abstract class BaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         LocaleUtils.setLocale(this);
         Tools.setInsetsMode(this, setFullscreen(), shouldIgnoreNotch());
-        Tools.updateWindowSize(this);
     }
 
     /** @return Whether the activity should be set as a fullscreen one */
