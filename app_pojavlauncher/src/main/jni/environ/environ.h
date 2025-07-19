@@ -59,7 +59,7 @@ struct pojav_environ_s {
     JavaVM* runtimeJavaVMPtr;
     JNIEnv* glfwThreadVmEnv;
     JavaVM* dalvikJavaVMPtr;
-    long showingWindow;
+    jlong showingWindow;
     bool isInputReady, isCursorEntered, isUseStackQueueCall, shouldUpdateMouse;
     bool shouldUpdateMonitorSize, monitorSizeConsumed;
     int savedWidth, savedHeight;

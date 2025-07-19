@@ -43,6 +43,16 @@ do {                                                                       \
 
 static void registerFunctions(JNIEnv *env);
 
+static void initGlfwControllerState() {
+#define GLFW_GAMEPAD_AXIS_LEFT_TRIGGER 4
+#define GLFW_GAMEPAD_AXIS_RIGHT_TRIGGER 5
+    // In idle state, the trigger values are -1 AND NOT 0
+    pojav_environ->gamepadState.axes[GLFW_GAMEPAD_AXIS_LEFT_TRIGGER] = -1.0f;
+    pojav_environ->gamepadState.axes[GLFW_GAMEPAD_AXIS_RIGHT_TRIGGER] = -1.0f;
+#undef GLFW_GAMEPAD_AXIS_LEFT_TRIGGER
+#undef GLFW_GAMEPAD_AXIS_RIGHT_TRIGGER
+}
+
 jint JNI_OnLoad(JavaVM* vm, __attribute__((unused)) void* reserved) {
     if (pojav_environ->dalvikJavaVMPtr == NULL) {
         LOGI("Saving DVM environ...");
@@ -70,6 +80,7 @@ jint JNI_OnLoad(JavaVM* vm, __attribute__((unused)) void* reserved) {
         jfieldID field_mouseDownBuffer = (*vmEnv)->GetStaticFieldID(vmEnv, pojav_environ->vmGlfwClass, "mouseDownBuffer", "Ljava/nio/ByteBuffer;");
         jobject mouseDownBufferJ = (*vmEnv)->GetStaticObjectField(vmEnv, pojav_environ->vmGlfwClass, field_mouseDownBuffer);
         pojav_environ->mouseDownBuffer = (*vmEnv)->GetDirectBufferAddress(vmEnv, mouseDownBufferJ);
+        initGlfwControllerState();
         hookExec(vmEnv);
         installLwjglDlopenHook(vmEnv);
         installEMUIIteratorMititgation(vmEnv);
@@ -469,7 +480,7 @@ JNIEXPORT void JNICALL Java_org_lwjgl_glfw_CallbackBridge_nativeSetWindowAttrib(
     (*jvm_env)->CallStaticVoidMethod(
             jvm_env, pojav_environ->vmGlfwClass,
             pojav_environ->method_glftSetWindowAttrib,
-            (jlong) pojav_environ->showingWindow, attrib, value
+            pojav_environ->showingWindow, attrib, value
     );
 
     // Attaching every time is annoying, so stick the attachment to the Android GUI thread around
