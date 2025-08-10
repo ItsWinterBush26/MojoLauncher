@@ -443,4 +443,12 @@
     <string name="auth_select_elyby">Ely.by account</string>
     <string name="auth_select_local">Local account</string>
     <string name="instance_dir_missing">Instance is missing</string>
+    <string name="newerdl_inserting_metadata">Searching for file metadata…</string>
+    <string name="newerdl_inserting_metadata_count">Searching for file metadata… (%d/%d)</string>
+    <string name="newerdl_downloading_files_count">Downloading files… (%d/%d, %.2f MB/s)</string>
+    <string name="newerdl_downloading_files_size">Downloading files… (%.2f/%.2f MB, %.2f MB/s)</string>
+    <string name="preference_verify_game_files_title">Verify game files</string>
+    <string name="preference_verify_game_files_description">Verify downloaded game files against the checksum and size set in the metadata. Metadata JSON files are verified regardless of this setting.</string>
+    <string name="preference_go_vroom_title">Fast game startup</string>
+    <string name="preference_go_vroom_description">Don\'t verify file checksums upon sequential restarts. Makes the game start-up very fast.</string>
 </resources>
