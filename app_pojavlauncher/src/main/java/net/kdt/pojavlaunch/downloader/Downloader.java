@@ -28,7 +28,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import git.artdeell.mojo.R;
 
-public abstract class Downloader {
+public class Downloader {
     private static final double ONE_MEGABYTE = (1024d * 1024d);
     private static final ThreadLocal<byte[]> sThreadLocalBuffer = new ThreadLocal<>();
     private final String mProgressKey;
@@ -45,7 +45,7 @@ public abstract class Downloader {
         this.mProgressKey = mProgressKey;
     }
 
-    protected void start(ArrayList<TaskMetadata> downloads) throws IOException, InterruptedException {
+    protected void runDownloads(ArrayList<TaskMetadata> downloads) throws IOException, InterruptedException {
         try {
             insertMetadata(downloads);
         }catch (IOException e) {
@@ -54,8 +54,6 @@ public abstract class Downloader {
         }
         performDownloads(downloads);
     }
-
-    protected abstract void onComplete() throws IOException;
 
     private void performDownloads(ArrayList<TaskMetadata> metadata) throws IOException, InterruptedException {
         mThreadException.set(null);
@@ -89,7 +87,6 @@ public abstract class Downloader {
                 !mDownloadService.awaitTermination(100, TimeUnit.MILLISECONDS)) {
             throw new RuntimeException("BUG! The file counter is wrong. Maybe. Send this to artDev.");
         }
-        onComplete();
     }
 
     private void insertMetadata(ArrayList<TaskMetadata> metadata) throws IOException, InterruptedException {

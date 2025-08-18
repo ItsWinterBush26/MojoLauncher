@@ -90,7 +90,10 @@ public class MinecraftDownloader extends Downloader {
             throw new RuntimeException(activity.getString(R.string.exception_failed_to_unpack_jre17));
         }
 
-        start(mScheduledDownloadTasks);
+        runDownloads(mScheduledDownloadTasks);
+
+        ensureJarFileCopy();
+        extractNatives(mVersionName);
     }
 
     private File createGameJsonPath(String versionId) {
@@ -332,11 +335,5 @@ public class MinecraftDownloader extends Downloader {
         );
         // Store the path of the JAR to copy it into our new version folder later.
         mSourceJarFile = clientJar;
-    }
-
-    @Override
-    protected void onComplete() throws IOException {
-        ensureJarFileCopy();
-        extractNatives(mVersionName);
     }
 }
