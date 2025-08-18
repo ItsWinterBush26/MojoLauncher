@@ -55,7 +55,7 @@ public class HashUtils {
     public static boolean compareSHA1(File f, String sourceSHA) throws IOException{
         try {
             MessageDigest messageDigest = MessageDigest.getInstance("SHA-1");
-            byte[] wantedBytes = Hex.decodeHex(sourceSHA);
+            byte[] wantedBytes = Hex.decodeHex(sourceSHA.toCharArray());
             byte[] localFileBytes = fileHash(messageDigest, f);
             return Arrays.equals(localFileBytes, wantedBytes);
         }catch (NoSuchAlgorithmException e) {
