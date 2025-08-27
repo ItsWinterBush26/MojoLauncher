@@ -33,14 +33,7 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '17'
-      - name: Create out directory
-        run: mkdir out
-      - name: Build Publishing .aab
-        if: github.repository_owner == 'MojoLauncher' && github.ref_name == 'v3_openjdk'
-        run: |
-          gradle :app_pojavlauncher:bundleFullGplay
-          mv app_pojavlauncher/build/outputs/bundle/fullGplay/app_pojavlauncher-full-gplay.aab out/app-gplay.aab
-
+      
       - name: Build FOGLTLOGLES
         run: |
          git clone --depth 1 https://github.com/ThatMG393-2/FOGLTLOGLES.git FOGLTLOGLES
@@ -50,10 +43,18 @@ jobs:
 
       - name: Copy FOGLTLOGLES lib
         run: |
-          cd FOGLTLOGLES
-          cp build/*.so /workspaces/MojoLauncher/app_pojavlauncher/src/main/jniLibs/arm64-v8a/
-          cp build/*.so /workspaces/MojoLauncher/app_pojavlauncher/src/main/jniLibs/armeabi-v7a/
-                                                    
+          cp FOGLTLOGLES/build/*.so app_pojavlauncher/src/main/jniLibs/arm64-v8a/
+          cp FOGLTLOGLES/build/*.so app_pojavlauncher/src/main/jniLibs/armeabi-v7a/
+      
+      - name: Create out directory
+        run: |
+          mkdir out
+      - name: Build Publishing .aab
+        if: github.repository_owner == 'MojoLauncher' && github.ref_name == 'v3_openjdk'
+        run: |
+          gradle :app_pojavlauncher:bundleFullGplay
+          mv app_pojavlauncher/build/outputs/bundle/fullGplay/app_pojavlauncher-full-gplay.aab out/app-gplay.aab        
+
       - name: Build Debug .apk
         run: |
           # Build the launcher
