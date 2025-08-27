@@ -41,6 +41,19 @@ jobs:
           gradle :app_pojavlauncher:bundleFullGplay
           mv app_pojavlauncher/build/outputs/bundle/fullGplay/app_pojavlauncher-full-gplay.aab out/app-gplay.aab
 
+      - name: Build FOGLTLOGLES
+        run: |
+         git clone --depth 1 https://github.com/ThatMG393-2/FOGLTLOGLES.git FOGLTLOGLES
+         cd FOGLTLOGLES
+         chmod +x build.sh
+         bash build.sh
+
+      - name: Copy FOGLTLOGLES lib
+        run: |
+          cd FOGLTLOGLES
+          cp build/*.so /app_pojavlauncher/src/main/jniLibs/arm64-v8a/
+          cp build/*.so /app_pojavlaumcher/src/main/jniLibs/armeabi-v7a/
+                                                    
       - name: Build Debug .apk
         run: |
           # Build the launcher
