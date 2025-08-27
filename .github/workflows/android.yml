@@ -51,8 +51,8 @@ jobs:
       - name: Copy FOGLTLOGLES lib
         run: |
           cd FOGLTLOGLES
-          cp build/*.so /app_pojavlauncher/src/main/jniLibs/arm64-v8a/
-          cp build/*.so /app_pojavlaumcher/src/main/jniLibs/armeabi-v7a/
+          cp build/*.so /workspaces/MojoLauncher/app_pojavlauncher/src/main/jniLibs/arm64-v8a/
+          cp build/*.so /workspaces/MojoLauncher/app_pojavlauncher/src/main/jniLibs/armeabi-v7a/
                                                     
       - name: Build Debug .apk
         run: |
