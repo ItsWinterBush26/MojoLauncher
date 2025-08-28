@@ -1,7 +1,7 @@
 pluginManagement {
     repositories {
         gradlePluginPortal()
-        google ()
+        google()
     }
 }
 
@@ -13,7 +13,6 @@ dependencyResolutionManagement {
         maven { url "https://jitpack.io" }
     }
 }
-
 
 rootProject.name='PojavLauncher'
 include ':jre_lwjgl3glfw'
