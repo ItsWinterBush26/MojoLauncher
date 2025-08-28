@@ -1,45 +1,60 @@
 plugins {
-    id 'com.android.library' version '8.2.0' apply false
-}
-
-android {
-    namespace "com.bzlzhh.ng_gl4es"
-    compileSdk libs.versions.compileSdk.get().toInteger()
-
-    defaultConfig {
-        minSdk libs.versions.minSdk.get().toInteger()
-    }
-
-    lint {
-        targetSdk libs.versions.targetSdk.get().toInteger()
-    }
-
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
+        id 'com.android.library'
         }
 
-        create("fordebug") {
-            initWith(getByName("debug"))
-        }
-    }
+        android {
+            namespace 'com.yourcompany.gl4es'
+                compileSdk 34
 
-    externalNativeBuild {
-        cmake {
-            path file("NG-GL4ES/CMakeLists.txt")
-        }
-    }
+                    defaultConfig {
+                            minSdk 21
+                                    targetSdk 34
 
-    ndkVersion "27.0.12077973"
-}
-apply plugin: 'com.android.library'
-}
+                                            testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+                                                    consumerProguardFiles "consumer-rules.pro"
+                                                            
+                                                                    externalNativeBuild {
+                                                                                cmake {
+                                                                                                cppFlags "-std=c++14"
+                                                                                                                arguments "-DANDROID_STL=c++_static"
+                                                                                                                                abiFilters 'arm64-v8a', 'armeabi-v7a', 'x86', 'x86_64'
+                                                                                                                                            }
+                                                                                                                                                    }
+                                                                                                                                                        }
 
-dependencies {
-    implementation 'androidx.appcompat:appcompat:1.7.0'
-    implementation 'androidx.core:core-ktx:1.13.1'
+                                                                                                                                                            buildTypes {
+                                                                                                                                                                    release {
+                                                                                                                                                                                minifyEnabled false
+                                                                                                                                                                                            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+                                                                                                                                                                                                    }
+                                                                                                                                                                                                        }
+                                                                                                                                                                                                            
+                                                                                                                                                                                                                externalNativeBuild {
+                                                                                                                                                                                                                        cmake {
+                                                                                                                                                                                                                                    path "CMakeLists.txt"
+                                                                                                                                                                                                                                                version "3.22.1"
+                                                                                                                                                                                                                                                        }
+                                                                                                                                                                                                                                                            }
+                                                                                                                                                                                                                                                                
+                                                                                                                                                                                                                                                                    compileOptions {
+                                                                                                                                                                                                                                                                            sourceCompatibility JavaVersion.VERSION_1_8
+                                                                                                                                                                                                                                                                                    targetCompatibility JavaVersion.VERSION_1_8
+                                                                                                                                                                                                                                                                                        }
+                                                                                                                                                                                                                                                                                            
+                                                                                                                                                                                                                                                                                                packagingOptions {
+                                                                                                                                                                                                                                                                                                        jniLibs {
+                                                                                                                                                                                                                                                                                                                    useLegacyPackaging true
+                                                                                                                                                                                                                                                                                                                            }
+                                                                                                                                                                                                                                                                                                                                }
+                                                                                                                                                                                                                                                                                                                                    
+                                                                                                                                                                                                                                                                                                                                        sourceSets {
+                                                                                                                                                                                                                                                                                                                                                main {
+                                                                                                                                                                                                                                                                                                                                                            jniLibs.srcDirs = ['src/main/jniLibs']
+                                                                                                                                                                                                                                                                                                                                                                    }
+                                                                                                                                                                                                                                                                                                                                                                        }
+                                                                                                                                                                                                                                                                                                                                                                        }
+
+                                                                                                                                                                                                                                                                                                                                                                        dependencies {
+                                                                                                                                                                                                                                                                                                                                                                            implementation 'androidx.appcompat:appcompat:1.6.1'
+                                                                                                                                                                                                                                                                                                                                                                            }
 }
