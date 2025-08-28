@@ -1,7 +1,4 @@
-plugins {
-    id 'com.android.library'
-    id 'org.jetbrains.kotlin.android'
-}
+apply plugin: 'com.android.library'
 android {
     namespace 'com.bzlzhh.ng_gl4es'
     compileSdk 35
