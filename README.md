@@ -52,7 +52,7 @@ You can get MojoLauncher via three methods:
 - [ ] mrpack/CurseForge zip import
 - [ ] MMC-compatible instance import
 - [ ] Patch-on-dlopen for mod native libraries
-- [ ] Replace Holy-GL4ES 1.1.5 with KW (maybe? need to figure out requirements)
+- [x] Replace Holy-GL4ES 1.1.5 with KW (maybe? need to figure out requirements)
 
 ## Known Issues
 - Some physical mice may have very slow mouse speed
