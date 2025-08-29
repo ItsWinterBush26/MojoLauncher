@@ -10,18 +10,20 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_C_STANDARD_REQUIRED ON)
 
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fvisibility=hidden")
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-if(MACOS)
-        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -w -fvisibility=default -DNO_GBM -funwind-tables -g -D_THREAD_SAFE -fPIC -stdlib=libc++")
-        set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -w -g -std=gnu99 -funwind-tables -O3 -fvisibility=hidden")
-        set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -static-libstdc++")
-else()
-        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -w -fvisibility=hidden  -DNOX11 -funwind-tables -g -D_THREAD_SAFE -fPIC")
-        set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -w -g -std=gnu99 -funwind-tables -O3 -fvisibility=hidden")
-        set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -static-libstdc++")
-        set(CMAKE_ANDROID_STL_TYPE c++_static)
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fPIC -DNO_GBM -DDEFAULT_ES=3 -fvisibility=hidden")
+
+if(ANDROID)
+        set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DNOX11 -flto")
+        set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -flto -Wl,--gc-sections")
+        
+        if(CMAKE_BUILD_TYPE STREQUAL "Release")
+            set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Os")
+            set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -s")
+        endif()
 endif()
 
 include_directories(${CMAKE_SOURCE_DIR}/include )
