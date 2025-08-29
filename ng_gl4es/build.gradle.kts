@@ -32,7 +32,7 @@ android {
     externalNativeBuild {
         cmake {
             path = file("NG-GL4ES/CMakeLists.txt")
-            version = "0.4.1"
+            version = "3.7.0"
         }
     }
     compileOptions {
