@@ -4,14 +4,14 @@ plugins {
 
 android {
     namespace = "com.bzlzhh.ng_gl4es"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         minSdk = 21
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
-        ndkVersion = "27.1.12297006"
+        ndkVersion = "28.2.13676358"
     }
 
     buildTypes {
@@ -32,7 +32,7 @@ android {
     externalNativeBuild {
         cmake {
             path = file("NG-GL4ES/CMakeLists.txt")
-            version = "3.22.1"
+            version = "0.4.1"
         }
     }
     compileOptions {
