@@ -22,6 +22,12 @@ android {
         }
     }
 
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['src/main/jniLibs']
+        }
+    }
+
     externalNativeBuild {
         cmake {
             path = file("NG-GL4ES/CMakeLists.txt")
