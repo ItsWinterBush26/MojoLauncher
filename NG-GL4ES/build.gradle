@@ -1,26 +1,13 @@
-apply plugin: 'com.android.library'
+apply plugin: 'com.android.library' version '8.11.1'
+
 android {
     namespace 'com.bzlzhh.ng_gl4es'
     compileSdk 35
 
     defaultConfig {
-        
-        minSdk 21
-        targetSdk 35
-
-        externalNativeBuild {
-            cmake {
-                cppFlags ""
-            }
-        }
-
-        ndk {
-            stl "c++_static"
-            //noinspection ChromeOsAbiSupport
-            abiFilters 'arm64-v8a'
-        }
-
-        ndkVersion "27.2.12479018"
+        minSdkVersion 21
+       targetSdkVersion 34
+               }
     }
 
     buildTypes {
