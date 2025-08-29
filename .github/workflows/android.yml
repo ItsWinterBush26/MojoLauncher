@@ -16,6 +16,12 @@ jobs:
         with: 
           submodules: "recursive"
 
+      - name: Patch NG GL4ES
+        run: |
+          cd ng_gl4es
+          rm /NG-GL4ES/CMakeLists.txt
+          mv CMakeLists.txt /NG-GL4ES/
+          
       - name: Get LTW
         uses: dawidd6/action-download-artifact@v2
         continue-on-error: true
