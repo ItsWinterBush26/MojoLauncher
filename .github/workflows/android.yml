@@ -13,20 +13,22 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-        with: 
-          submodules: "recursive"
-
-      - name: Patch NG GL4ES
-        run: |
-          cd ng_gl4es
-          rm NG-GL4ES/CMakeLists.txt
-          mv CMakeLists.txt NG-GL4ES/
           
       - name: Get LTW
         uses: dawidd6/action-download-artifact@v2
         continue-on-error: true
         with:
           repo: artdeell/LTW
+          workflow: android.yml
+          workflow_conclusion: success
+          name: output-aar
+          path: app_pojavlauncher/libs
+
+      - name: Get NG GL4ES
+        uses: dawidd6/action-download-artifact@v2
+        continue-on-error: true
+        with:
+          repo: ItsWinterBush26/NG-GL4ES-MOJO
           workflow: android.yml
           workflow_conclusion: success
           name: output-aar
