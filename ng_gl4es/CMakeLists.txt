@@ -2,28 +2,25 @@ cmake_minimum_required(VERSION 3.10)
 
 project(ng_gl4es)
 
-enable_language(CXX)
-
+# Set standards early
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_C_STANDARD_REQUIRED ON)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fvisibility=hidden")
+# Common flags for both C and C++
+set(COMMON_FLAGS "-Os -flto -fvisibility=hidden -fPIC")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${COMMON_FLAGS} -DNO_GBM -DDEFAULT_ES=3")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${COMMON_FLAGS}")
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fPIC -DNO_GBM -DDEFAULT_ES=3 -fvisibility=hidden")
-
+# Android-specific configuration
 if(ANDROID)
-        set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DNOX11 -flto")
-        set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -flto -Wl,--gc-sections")
-        
-        if(CMAKE_BUILD_TYPE STREQUAL "Release")
-            set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Os")
-            set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -s")
-        endif()
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DNOX11")
+    set(LINKER_FLAGS "-s -Wl,--gc-sections")
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${LINKER_FLAGS} -flto")
+    set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} ${LINKER_FLAGS}")
 endif()
 
 include_directories(${CMAKE_SOURCE_DIR}/include )
