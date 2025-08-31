@@ -44,11 +44,11 @@ jobs:
           name: android-armeabi-v7a-compressed
           path: app_pojavlauncher/src/main/jniLibs/armeabi-v7a
 
-      - name: Get NG GL4ES aarch32
+      - name: Get NG GL4ES x86_64
         uses: dawidd6/action-download-artifact@v2
         continue-on-error: true
         with:
-          repo: ItsWinterBush26/NG-GL4ES x86_64
+          repo: ItsWinterBush26/NG-GL4ES
           workflow: c-cpp.yml 
           workflow_conclusion: success
           name: android-x86_64-compressed
@@ -58,7 +58,7 @@ jobs:
         uses: dawidd6/action-download-artifact@v2
         continue-on-error: true
         with:
-          repo: ItsWinterBush26/NG-GL4ES x86
+          repo: ItsWinterBush26/NG-GL4ES
           workflow: c-cpp.yml 
           workflow_conclusion: success
           name: android-x86-compressed
