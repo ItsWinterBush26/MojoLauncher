@@ -84,6 +84,7 @@ LOCAL_MODULE := awt_xawt
 LOCAL_EXPORT_C_INCLUDES := $(LOCAL_PATH)
 LOCAL_SHARED_LIBRARIES := awt_headless
 LOCAL_SRC_FILES := xawt_fake.c
+LOCAL_LDFLAGS += -flto -Wl,--gc-sections
 include $(BUILD_SHARED_LIBRARY)
 
 # delete fake libs after linked
