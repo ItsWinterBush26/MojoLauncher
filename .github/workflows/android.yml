@@ -24,16 +24,46 @@ jobs:
           name: output-aar
           path: app_pojavlauncher/libs
 
-      - name: Get NG GL4ES
+      - name: Get NG GL4ES aarch64
         uses: dawidd6/action-download-artifact@v2
         continue-on-error: true
         with:
-          repo: ItsWinterBush26/NG-GL4ES-MOJO
-          workflow: android.yml
+          repo: ItsWinterBush26/NG-GL4ES
+          workflow: c-cpp.yml 
           workflow_conclusion: success
-          name: output-aar
-          path: app_pojavlauncher/libs
+          name: android-arm64-v8a-compressed
+          path: app_pojavlauncher/src/main/jniLibs/arm64-v8a
 
+      - name: Get NG GL4ES aarch32
+        uses: dawidd6/action-download-artifact@v2
+        continue-on-error: true
+        with:
+          repo: ItsWinterBush26/NG-GL4ES
+          workflow: c-cpp.yml 
+          workflow_conclusion: success
+          name: android-armeabi-v7a-compressed
+          path: app_pojavlauncher/src/main/jniLibs/armeabi-v7a
+
+      - name: Get NG GL4ES aarch32
+        uses: dawidd6/action-download-artifact@v2
+        continue-on-error: true
+        with:
+          repo: ItsWinterBush26/NG-GL4ES x86_64
+          workflow: c-cpp.yml 
+          workflow_conclusion: success
+          name: android-x86_64-compressed
+          path: app_pojavlauncher/src/main/jniLibs/x86_64
+
+      - name: Get NG GL4ES x86
+        uses: dawidd6/action-download-artifact@v2
+        continue-on-error: true
+        with:
+          repo: ItsWinterBush26/NG-GL4ES x86
+          workflow: c-cpp.yml 
+          workflow_conclusion: success
+          name: android-x86-compressed
+          path: app_pojavlauncher/src/main/jniLibs/x86
+          
       - uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: "8.14.3"
