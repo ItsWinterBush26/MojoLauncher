@@ -83,6 +83,10 @@ android {
         versionName getVersionName()
         multiDexEnabled true //important
         resValue 'string', 'curseforge_api_key', getCFApiKey()
+		stringfog {
+            implementation 'com.github.megatronking.stringfog.xor.StringFogImpl'
+            packageName 'net.kdt.pojavlaunch.firefly'
+		}
     }
 
     flavorDimensions  = ["runtime"]
@@ -97,11 +101,6 @@ android {
             versionNameSuffix "-noruntime"
         }
     }
-	
-	stringfog {
-            implementation 'com.github.megatronking.stringfog.xor.StringFogImpl'
-            packageName 'net.kdt.pojavlaunch.firefly'
-	}
 
     buildTypes {
         debug {
@@ -169,7 +168,8 @@ android {
         prefab true
         buildConfig true
     }
-    
+	
+    buildToolsVersion = '34.0.0'
     kotlinOptions {
         jvmTarget = '1.8'
         }
