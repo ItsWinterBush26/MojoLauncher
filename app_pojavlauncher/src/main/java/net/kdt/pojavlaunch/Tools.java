@@ -49,6 +49,7 @@ import androidx.core.app.NotificationManagerCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 
+import com.movtery.plugins.renderer.RendererPlugin;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -1411,6 +1412,20 @@ public final class Tools {
             rendererIds.add(rendererId);
             rendererNames.add(defaultRendererNames[i]);
         }
+        // RendererPlugin
+        if (RendererPlugin.isAvailable()) {
+            RendererPlugin.getRendererList().forEach(renderer -> {
+                if (rendererIds.contains(renderer.getId())) {
+                    int rendererIndex = rendererIds.indexOf(renderer.getId());
+                    if (rendererIndex != -1) {
+                        rendererIds.remove(renderer.getId());
+                        rendererNames.remove(rendererIndex);
+                        }
+                    }
+                    rendererIds.add(renderer.getId());
+                    rendererNames.add(renderer.getDes()); 
+                });
+            }
         sCompatibleRenderers = new RenderersList(rendererIds,
                 rendererNames.toArray(new String[0]));
 

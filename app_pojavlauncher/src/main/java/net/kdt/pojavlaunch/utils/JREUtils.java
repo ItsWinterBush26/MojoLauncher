@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.movtery.plugins.renderer.RendererPlugin;
 import com.oracle.dalvik.*;
 import java.io.*;
 import java.util.*;
@@ -158,6 +159,12 @@ public class JREUtils {
         if(ffmpegPath != null) {
             ldLibraryPath.append(ffmpegPath).append(":");
         }
+        
+        RendererPlugin.Renderer customRenderer = RendererPlugin.getSelectedRenderer();
+        if (customRenderer != null) {
+            ldLibraryPath.append(customRenderer.getPath()).append(":");
+        }
+
         ldLibraryPath.append(jreHome)
                 .append("/").append(Tools.DIRNAME_HOME_JRE)
                 .append("/jli:").append(jreHome).append("/").append(Tools.DIRNAME_HOME_JRE)
@@ -184,6 +191,7 @@ public class JREUtils {
     }
     public static void setJavaEnvironment(Activity activity, String jreHome, LibraryPlugin ffmpegPlugin) throws Throwable {
         Map<String, String> envMap = new ArrayMap<>();
+        String eglName = null;
         envMap.put("POJAV_NATIVEDIR", NATIVE_LIB_DIR);
         envMap.put("JAVA_HOME", jreHome);
         envMap.put("HOME", Tools.DIR_GAME_HOME);
@@ -235,7 +243,7 @@ public class JREUtils {
             if(LOCAL_RENDERER.equals("opengles3_ltw")) {
                 envMap.put("LIBGL_ES", "3");
                 envMap.put("POJAVEXEC_EGL","libltw.so"); // Use ANGLE EGL
-            }
+            } else (eglName != null) envMap.put("POJAVEXEC_EGL", eglName);
         }
         if(LauncherPreferences.PREF_BIG_CORE_AFFINITY) envMap.put("POJAV_BIG_CORE_AFFINITY", "1");
 
@@ -259,7 +267,7 @@ public class JREUtils {
             if (glesMajor < 3) {
                 //fallback to 2 since it's the minimum for the entire app
                 envMap.put("LIBGL_ES","2");
-            } else if (LOCAL_RENDERER.startsWith("opengles")) {
+            } else if (LOCAL_RENDERER.startsWith("opengles") || LOCAL_RENDERER.equals(customRenderer.getId())) {
                 envMap.put("LIBGL_ES", LOCAL_RENDERER.replace("opengles", "").replace("_5", ""));
             } else {
                 // TODO if can: other backends such as Vulkan.
@@ -267,6 +275,26 @@ public class JREUtils {
                 envMap.put("LIBGL_ES", "3");
             }
         }
+
+        RendererPlugin.Renderer customRenderer = RendererPlugin.getSelectedRenderer();
+        if (customRenderer != null && LOCAL_RENDERER.equals(customRenderer.getId())) {
+            customRenderer.getEnv().forEach(envPair -> {
+                String envKey = envPair.getFirst();
+                String envValue = envPair.getSecond();
+                if (envKey.equals("DLOPEN") || envKey.equals("POJAV_RENDERER")) return;
+                if (envKey.equals("LIB_MESA_NAME")) {
+                    envMap.put(envKey, customRenderer.getPath() + "/" + envValue);
+                } else {
+                    envMap.put(envKey, envValue);
+                }
+            });
+            String customEglName = customRenderer.getEglName();
+            if (customEglName.startsWith("/")) {
+                eglName = customRenderer.getPath() + customEglName;
+            } else {
+                eglName = customEglName;
+            }                                                                                                                                                                                                                                     
+        } 
 
         if(info.isAdreno() && !PREF_ZINK_PREFER_SYSTEM_DRIVER) {
             envMap.put("POJAV_LOAD_TURNIP", "1");
@@ -476,20 +504,31 @@ public class JREUtils {
      * @return The name of the loaded library
      */
     public static String loadGraphicsLibrary(){
+        RendererPlugin.Renderer customRenderer = RendererPlugin.getSelectedRenderer();
         if(LOCAL_RENDERER == null) return null;
         String renderLibrary;
-        switch (LOCAL_RENDERER){
-            case "opengles2":
-            case "opengles2_5":
-            case "opengles3":
-                renderLibrary = "libgl4es_114.so"; break;
-            case "vulkan_zink": renderLibrary = "libOSMesa.so"; break;
-            case "opengles3_ltw" : renderLibrary = "libltw.so"; break;
-            default:
-                Log.w("RENDER_LIBRARY", "No renderer selected, defaulting to opengles2");
-                renderLibrary = "libgl4es_114.so";
-                break;
-        }
+        if (customRenderer != null) {
+            renderLibrary = customRenderer.getGlName();
+            customRenderer.getEnv().forEach(envPair -> {
+                if (envPair.getFirst().equals("DLOPEN")) {
+                    String[] libs = envPair.getSecond().split(",");
+                    for (String lib : libs) {
+                        dlopen(customRenderer.getPath() + "/" + lib);
+                    }
+                }
+            });
+        } else {
+            switch (LOCAL_RENDERER){
+                case "opengles2":
+                case "opengles2_5":
+                case "opengles3": renderLibrary = "libgl4es_114.so"; break;
+                case "vulkan_zink": renderLibrary = "libOSMesa.so"; break;
+                case "opengles3_ltw" : renderLibrary = "libltw.so"; break;
+                default:
+                    Log.w("RENDER_LIBRARY", "No renderer selected, defaulting to opengles2");
+                    renderLibrary = "libgl4es_114.so";
+                    break;
+            }
 
         if (!dlopen(renderLibrary) && !dlopen(findInLdLibPath(renderLibrary))) {
             Log.e("RENDER_LIBRARY","Failed to load renderer " + renderLibrary + ". Falling back to GL4ES 1.1.4");
