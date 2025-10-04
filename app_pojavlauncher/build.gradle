@@ -96,12 +96,12 @@ android {
             dimension "runtime"
             versionNameSuffix "-noruntime"
         }
-       
-        stringfog {
-            implementation 'com.github.megatronking.stringfog.xor.StringFogImpl'
-            packageName 'git.artdeell.mojo'
-        }
     }
+	
+	stringfog {
+            implementation 'com.github.megatronking.stringfog.xor.StringFogImpl'
+            packageName 'net.kdt.pojavlaunch.firefly'
+	}
 
     buildTypes {
         debug {
