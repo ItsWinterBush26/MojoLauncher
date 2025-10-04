@@ -267,7 +267,7 @@ public class JREUtils {
             if (glesMajor < 3) {
                 //fallback to 2 since it's the minimum for the entire app
                 envMap.put("LIBGL_ES","2");
-            } else if (LOCAL_RENDERER.startsWith("opengles") || LOCAL_RENDERER.equals(customRenderer.getId())) {
+            } else if (LOCAL_RENDERER.startsWith("opengles") || (customRenderer != null && LOCAL_RENDERER.equals(customRenderer.getId()))) {
                 envMap.put("LIBGL_ES", LOCAL_RENDERER.replace("opengles", "").replace("_5", ""));
             } else {
                 // TODO if can: other backends such as Vulkan.
