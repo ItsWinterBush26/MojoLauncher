@@ -7,7 +7,7 @@ import android.content.pm.PackageManager
 import android.os.Build
 
 import net.kdt.pojavlaunch.Tools
-import net.kdt.pojavlaunch.R
+import git.artdeell.mojo.R
 
 /**
  * FCL、ZalithLauncher 渲染器插件
