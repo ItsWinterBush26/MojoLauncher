@@ -99,7 +99,7 @@ android {
        
         stringfog {
             implementation 'com.github.megatronking.stringfog.xor.StringFogImpl'
-            packageName 'net.kdt.pojavlaunch.firefly'
+            packageName 'git.artdeell.mojo'
         }
     }
 
